@@ -1,0 +1,16 @@
+nodes:
+    - address: 192.168.122.111
+      user: rke
+      ssh_key_path: ~/.ssh/id_rsa
+      role:
+        - controlplane
+        - etcd
+        - worker
+    - address: 192.168.122.112
+      user: rke
+      ssh_key_path: ~/.ssh/id_rsa
+      role:
+        - controlplane
+        - etcd
+        - worker
+ignore_docker_version: true

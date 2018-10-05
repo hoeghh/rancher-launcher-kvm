@@ -1,0 +1,91 @@
+# Install OS instead of upgrade
+install
+# Use network installation
+cdrom
+# Root password
+rootpw TMPL_PSWD
+# System authorization information
+auth  --useshadow  --passalgo=sha512
+
+# Firewall configuration
+firewall --disabled
+# SELinux configuration
+selinux --permissive
+
+# Installation logging level
+logging --level=info
+# Use text mode install
+text
+# Do not configure the X Window System
+skipx
+# System timezone, language and keyboard
+timezone --utc Europe/Copenhagen
+lang da_DK.UTF-8
+keyboard dk-latin1
+# Network information
+# network  --bootproto=static --ip=192.168.122.110 --device=eth0 --onboot=on
+# If you want to configure a static IP:
+network --device eth0 --hostname TMPL_HOSTNAME --bootproto=static --ip=TMPL_IP --netmask=255.255.255.0 --gateway=192.168.122.1 --nameserver 192.168.122.1
+
+
+# System bootloader configuration
+bootloader --location=mbr
+# Partition clearing information
+clearpart --all --initlabel
+# Disk partitioning information
+part /boot --fstype="ext4" --size=512
+part swap --fstype="swap" --recommended
+part /var --fstype="ext4" --size=5120
+part / --fstype="ext4" --size=1024
+part /usr --fstype="ext4" --size=3072
+part /home --fstype="ext4" --size=512
+part /tmp --fstype="ext4" --size=1024
+
+# Reboot after installation
+reboot
+
+%packages  --nobase
+@core
+# @base
+
+%end
+
+%post --log=/root/ks-post.log
+#---- Install packages used by kubernetes
+yum install -y socat libseccomp-devel btrfs-progs-devel util-linux nfs-utils conntrack-tools.x86_64
+
+#---- Add user RKE -----
+groupadd docker
+adduser rke
+echo "rke:praqma" | chpasswd
+usermod -aG docker rke
+
+
+#---- Install our SSH key ----
+mkdir -m0700 /home/rke/.ssh/
+cat <<EOF >/home/rke/.ssh/authorized_keys
+TMPL_SSH_KEY
+EOF
+
+
+### set permissions
+chmod 0600 /home/rke/.ssh/authorized_keys
+chown -R rke:rke /home/rke/.ssh
+
+### fix up selinux context
+restorecon -R /home/rke/.ssh/authorized_keys
+
+
+### Install Docker
+yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+yum -y install docker-ce
+systemctl enable docker
+
+%end
