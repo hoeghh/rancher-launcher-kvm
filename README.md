@@ -1,4 +1,4 @@
-# rancher-launcher-kvm
+# Rancher launcher kvm
 A easy way to get a Rancher Kubernetes cluster up and running on KVM/Libvirt
 
 This script will create machines in KVM prepared with docker and ssh key. It will also generate a cluster.yml that can be used by RKE to provision a Kubernetes cluster. This cluster can then be joined to a Rancher manager UI.
