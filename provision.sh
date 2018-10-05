@@ -75,5 +75,5 @@ do
   add_node_to_cluster $i
 done
 
-
+echo "ignore_docker_version: true" >> cluster.yml
 
