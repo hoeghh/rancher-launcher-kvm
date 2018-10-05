@@ -20,7 +20,7 @@ Then, simply run rke to create the cluster
 rke up
 ```
 
-When done, a cluster will be running. It will generate a config file you can use with kubeadm.
+When done, a cluster will be running. It will generate a config file you can use with kubectl.
 
 ```
 kubectl get cs --kubeconfig kube_config_cluster.yml
