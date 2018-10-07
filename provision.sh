@@ -64,8 +64,8 @@ if [ -z "$SRV_NB" ]; then
 fi
 
 
+echo "" > hosts_entries
 echo "nodes:" > cluster.yml
-
 echo "Creating $SRV_NB of servers..."
 
 for i in $( seq 1 $SRV_NB )
@@ -73,7 +73,13 @@ do
   echo "Creating VM $i"
   create_vm $i & 
   add_node_to_cluster $i
+  echo "192.168.122.$((110 + $i)) $SRV_HOSTNAME_PREFIX-$i" >> hosts_entries
 done
 
 echo "ignore_docker_version: true" >> cluster.yml
 
+wait
+echo "
+
+Add these entries to your hosts /etc/hosts"
+cat hosts_entries
