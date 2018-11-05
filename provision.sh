@@ -31,7 +31,7 @@ create_vm () {
   sed -i "s;TMPL_SSH_KEY;$SSH_KEY;g" $VM_KS
 
   echo "Creating disc image..."
-  qemu-img create -f qcow2 /vm-disks/$SRV_HOSTNAME_PREFIX-$VM_NB.qcow2 15G
+  qemu-img create -f qcow2 /vm-disks/$SRV_HOSTNAME_PREFIX-$VM_NB.qcow2 50G
 
   echo "Creating virtual machine and running installer..."
   virt-install --name $SRV_HOSTNAME_PREFIX-$VM_NB \
