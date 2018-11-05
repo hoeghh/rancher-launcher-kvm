@@ -1,0 +1,11 @@
+cluster.yml
+hosts_entries
+ks-1.cfg
+ks-2.cfg
+ks-3.cfg
+ks-4.cfg
+ks-5.cfg
+ks-6.cfg
+kube_config_cluster.yml
+tiller-rbac-config.yaml
+
