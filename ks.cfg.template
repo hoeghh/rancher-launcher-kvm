@@ -34,9 +34,9 @@ bootloader --location=mbr
 clearpart --all --initlabel
 # Disk partitioning information
 part /boot --fstype="ext4" --size=512
-part swap --fstype="swap" --recommended
-part /var --fstype="ext4" --size=5120
-part / --fstype="ext4" --size=1024
+#part swap --fstype="swap" --recommended
+part /var --fstype="ext4" --size=5120 --grow
+part / --fstype="ext4" --size=1024 --grow
 part /usr --fstype="ext4" --size=3072
 part /home --fstype="ext4" --size=512
 part /tmp --fstype="ext4" --size=1024
@@ -66,6 +66,11 @@ mkdir -m0700 /home/rke/.ssh/
 cat <<EOF >/home/rke/.ssh/authorized_keys
 TMPL_SSH_KEY
 EOF
+
+
+### Disabling swap (now and permently)
+swapoff -a
+sed -i '/^\/swapfile/ d' /etc/fstab
 
 
 ### set permissions
