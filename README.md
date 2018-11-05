@@ -25,3 +25,15 @@ When done, a cluster will be running. It will generate a config file you can use
 ```
 kubectl get cs --kubeconfig kube_config_cluster.yml
 ```
+
+# Install Rancher UI
+I made a small script that installs the Rancher Server (UI) via Helm.
+Fore using it, you need to download the Helm client and have it in your path.
+```
+vi install_rancher_server.sh
+# Change the last line with the hostname
+# Add the hostname to your /etc/hosts on a worker node
+
+./install_rancher_server.sh
+```
+It will create a ServiceAccound for Tiller and a ClusterRoleBinding for this ServiceAccount to a ClusteRole called cluster-admin. Then it installs Tiller, adds the repository for Rancher Server and installs Rancher and cert-manager.
