@@ -82,15 +82,8 @@ restorecon -R /home/rke/.ssh/authorized_keys
 
 
 ### Install Docker
-yum install -y yum-utils \
-  device-mapper-persistent-data \
-  lvm2
+yum install docker -y
 
-yum-config-manager \
-    --add-repo \
-    https://download.docker.com/linux/centos/docker-ce.repo
-
-yum -y install docker-ce
 systemctl enable docker
 
 %end
