@@ -76,8 +76,6 @@ do
   echo "192.168.122.$((110 + $i)) $SRV_HOSTNAME_PREFIX-$i" >> hosts_entries
 done
 
-echo "ignore_docker_version: true" >> cluster.yml
-
 wait
 echo "
 
