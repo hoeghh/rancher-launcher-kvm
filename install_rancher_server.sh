@@ -23,7 +23,7 @@ kubectl create -f tiller-rbac-config.yaml
 
 helm init --service-account tiller
 
-wait 15
+sleep 15
 
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 
