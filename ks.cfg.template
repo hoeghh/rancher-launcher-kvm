@@ -54,6 +54,10 @@ reboot
 #---- Install packages used by kubernetes
 yum install -y socat libseccomp-devel btrfs-progs-devel util-linux nfs-utils conntrack-tools.x86_64
 
+#---- Set bridge-nf-call
+echo "net.bridge.bridge-nf-call-ip6tables=1
+net.bridge.bridge-nf-call-iptables=1" > /etc/sysctl.conf
+
 #---- Add user RKE -----
 groupadd docker
 adduser rke
