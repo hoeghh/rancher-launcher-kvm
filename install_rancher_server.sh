@@ -23,7 +23,8 @@ kubectl create -f tiller-rbac-config.yaml
 
 helm init --service-account tiller
 
-sleep 15
+# Wait for tiller to be ready
+kubectl -n kube-system wait --for=condition=Ready -l app=helm,name=tiller pod --timeout=60s
 
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 
