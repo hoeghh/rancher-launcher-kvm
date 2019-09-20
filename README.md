@@ -34,6 +34,7 @@ vi install_rancher_server.sh
 # Change the last line with the hostname
 # Add the hostname to your /etc/hosts on a worker node
 
-./install_rancher_server.sh
+(cd scripts
+./install_rancher_server.sh)
 ```
-It will create a ServiceAccound for Tiller and a ClusterRoleBinding for this ServiceAccount to a ClusteRole called cluster-admin. Then it installs Tiller, adds the repository for Rancher Server and installs Rancher and cert-manager.
+It will create a ServiceAccount for Tiller and a ClusterRoleBinding for this ServiceAccount to a ClusteRole called cluster-admin. Then it installs Tiller, adds the repository for Rancher Server and installs Rancher and cert-manager.
