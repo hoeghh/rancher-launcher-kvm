@@ -65,7 +65,7 @@ if [ -z "$SRV_NB" ]; then
 fi
 
 echo "cluster_name: $k8s_name" > cluster.yml
-echo "k8s_version\" $k8s_version\"" >> cluster.yml
+echo "k8s_version: \"$k8s_version\"" >> cluster.yml
 
 echo "" >> hosts_entries
 
