@@ -39,7 +39,7 @@ create_vm () {
     --description "$vm_description-$VM_NB" \
     --ram $vm_ram \
     --vcpus $vm_vcpu \
-    --disk path=/vm-disks/$vm_prefix-$VM_NB.qcow2,size=15 \
+    --disk path=$image_location/$vm_prefix-$VM_NB.qcow2,size=15 \
     --os-type linux \
     --os-variant $vm_variant \
     --network bridge=virbr0 \
