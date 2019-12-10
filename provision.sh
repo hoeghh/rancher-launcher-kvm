@@ -97,3 +97,11 @@ fi
 
 echo "Add these entries to your hosts /etc/hosts"
 cat hosts_entries
+
+echo "
+
+If you want to run Sonobuoy, you need to run this command after you ran rke up
+kubectl label --overwrite node --selector node-role.kubernetes.io/controlplane=\"true\" node-role.kubernetes.io/master=\"true\"
+
+Fixing issue https://github.com/vmware-tanzu/sonobuoy/issues/574
+"
