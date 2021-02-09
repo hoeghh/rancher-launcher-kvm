@@ -83,6 +83,12 @@ done
 # Wait for machine commands to finish
 wait
 
+# Increase timeout for addons 
+# Workaround for issue : https://github.com/rancher/rke/issues/1652
+echo "
+addon_job_timeout: 60" >> cluster.yml
+
+
 # add network plugin
 echo "
 network:
