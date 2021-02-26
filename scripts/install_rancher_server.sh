@@ -1,38 +1,41 @@
-echo "
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: tiller
-  namespace: kube-system
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: tiller
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-  - kind: ServiceAccount
-    name: tiller
-    namespace: kube-system
+#!/bin/bash
 
-" > tiller-rbac-config.yaml
-kubectl create -f tiller-rbac-config.yaml
+LB_IP=$1
+[ "$LB_IP" ]
+: ${LB_IP:="127.0.0.1"}
 
-helm init --service-account tiller
-
-# Wait for tiller to be ready
-kubectl -n kube-system wait --for=condition=Ready -l app=helm,name=tiller pod --timeout=60s
-
+echo ""
+echo -e "Adding helm repo for cert-manger & Rancher\n"
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
 
-helm install stable/cert-manager \
-  --name cert-manager \
-  --namespace kube-system
+echo -e  " Creating namespace \n"
+kubectl create namespace cert-manager
+kubectl create namespace cattle-system
 
-helm install rancher-latest/rancher \
-  --name rancher \
+sleep 1
+echo -e " Installing Cert Manger\n"
+
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --version v1.2.0 \
+  --set installCRDs=true
+
+echo -e " Checking Rollout Status\n"
+kubectl -n cert-manager rollout status deploy/cert-manager
+
+
+sleep 5
+
+echo -e "Installing Rancher \n"
+helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
-  --set hostname=rancher.praqma.com
+  --set hostname=rancher-${LB_IP}.nip.io
+echo -e ""
+
+echo -e "Getting Deployment Status\n"
+kubectl -n cattle-system rollout status deploy/rancher
+echo -e ""
+kubectl -n cattle-system get deploy rancher
