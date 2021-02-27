@@ -28,13 +28,17 @@ kubectl get cs --kubeconfig kube_config_cluster.yml
 
 # Install Rancher UI
 I made a small script that installs the Rancher Server (UI) via Helm.
-Fore using it, you need to download the Helm client and have it in your path.
+For using it, you need to download the Helm client and have it in your path.
 ```
 vi install_rancher_server.sh
-# Change the last line with the hostname
+# Change the line with the hostname
 # Add the hostname to your /etc/hosts on a worker node
-
-(cd scripts
-./install_rancher_server.sh)
 ```
-It will create a ServiceAccount for Tiller and a ClusterRoleBinding for this ServiceAccount to a ClusteRole called cluster-admin. Then it installs Tiller, adds the repository for Rancher Server and installs Rancher and cert-manager.
+
+Or provide the IP address of loadbalander as input argument when running the script and it will use it as host.
+Hostname: i.e rancher-127.0.0.1.nip.io
+```
+cd scripts
+./install_rancher_server.sh '127.0.0.1'
+```
+It will create a namespaces for cert-manger and rancher. Adds the repository for Rancher & Cert-Manger and installs them in their respective namespaces.
