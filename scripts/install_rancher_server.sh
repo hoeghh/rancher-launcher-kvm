@@ -25,9 +25,9 @@ helm install \
 
 echo -e " Checking Rollout Status\n"
 kubectl -n cert-manager rollout status deploy/cert-manager
-
-
-sleep 5
+echo ""
+echo -e "Waiting for pods to initialize\n"
+sleep 20
 
 echo -e "Installing Rancher \n"
 helm install rancher rancher-latest/rancher \
