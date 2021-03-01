@@ -55,6 +55,9 @@ reboot
 yum update -y
 yum install -y socat libseccomp-devel btrfs-progs-devel util-linux nfs-utils conntrack-tools.x86_64
 
+#---- Install packages used by Longhorn
+yum install -y curl findmnt grep awk blkid iscsi-initiator-utils
+
 #---- Set bridge-nf-call
 echo "net.bridge.bridge-nf-call-ip6tables=1
 net.bridge.bridge-nf-call-iptables=1" > /etc/sysctl.conf
@@ -96,5 +99,8 @@ restorecon -R /home/rke/.ssh/authorized_keys
 ### Install Docker
 curl https://releases.rancher.com/install-docker/18.09.2.sh | sh
 systemctl enable docker
+
+### Enabeling iscasid for Longhorn
+systemctl enable iscsid
 
 %end
